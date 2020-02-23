@@ -1,0 +1,122 @@
+
+<div class="mat-elevation-z8" *ngIf="show == 'listunites'">
+  <div class="search-div">
+    <div class="example-button-row">
+      <button mat-raised-button color="accent" (click)="onFormUnite()">Ajouter unite</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <!--    Thematiques-->
+    <div class="col-sm-12">
+      <h6 class="text-center text-info text-capitalize">Unités de recherche </h6>
+      <mat-table [dataSource]="dataSource"  matSort>
+
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef mat-sort-header class="col-1" style="font-weight: bold" >No</mat-header-cell>
+          <mat-cell *matCellDef="let element" class="col-1">{{element.idUnite}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="libeleCourt">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Denomination</mat-header-cell>
+          <mat-cell *matCellDef="let element" >{{element.libeleCourt}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Email</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.email}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="responsable">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Responsable</mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <td *ngIf="element.responsable!=null" style="font-weight: bold;">
+              {{element.responsable.chercheur.prenom +" "+ element.responsable.chercheur.nom}}
+            </td>
+            <td *ngIf="element.responsable == null" style="font-weight: lighter">
+              Néant
+            </td>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="structure">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Etablissement rataché</mat-header-cell>
+          <mat-cell *matCellDef="let element">{{element.structure.libeleCourt}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef style="justify-content: center">Action</mat-header-cell>
+          <mat-cell *matCellDef="let row" style="justify-content: center">
+            <button mat-raised-button color="accent" (click)="getChercheursByUniteRecherche(row.idUnite)">Chercheurs</button>
+            <button mat-raised-button color="primary" (click)="onModifyUnite(row.libeleCourt)">Mod</button>
+            <button mat-raised-button color="warn" (click)="onDeleteUnite(row.idUnite)">Supp</button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</div>
+<mat-paginator #paginatorunite [hidden]="show != 'listunites'" [pageSizeOptions]="[5, 10]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+
+
+<!--Visualisation de la liste des chercheurs d'une unité -->
+<div class="container">
+<div *ngIf="show == 'listchercheurs'">
+  <div class="example-button-row">
+    <button mat-raised-button style="margin-top: 10px" color="accent" (click)="onlisteUnites()">Voir liste unités</button>
+  </div>
+
+  <mat-form-field>
+    <mat-label>Recherche</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSourceChercheurs">
+
+    <ng-container matColumnDef="prenom">
+      <th mat-header-cell *matHeaderCellDef> Prenom </th>
+      <td mat-cell *matCellDef="let element"> {{element.prenom}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nom">
+      <th mat-header-cell *matHeaderCellDef> Nom </th>
+      <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Email </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ne_le">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Date Naissance </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.ne_le | date}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lieu_naiss">
+      <th mat-header-cell *matHeaderCellDef class="text-center"> Lieu Naissance </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.lieu_de_naissance}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="loading">
+      <mat-footer-cell *matFooterCellDef>
+        Loading data...
+      </mat-footer-cell>
+    </ng-container>
+    <ng-container matColumnDef="noData">
+      <mat-footer-cell *matFooterCellDef>
+        Cette unité ne comporte pas de chercheurs.
+      </mat-footer-cell>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsChercheur"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsChercheur;"></tr>
+    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSourceChercheurs!=null}"></mat-footer-row>
+    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSourceChercheurs!=null && dataSourceChercheurs.data.length==0)}"></mat-footer-row>
+  </table>
+</div>
+<mat-paginator #paginatorchercheur [hidden]="show != 'listchercheurs'" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

@@ -1,0 +1,10 @@
+body {
+  font-family: Roboto, Arial, sans-serif;
+  margin: 0;
+}
+
+.avatarImage
+{
+  background-image: url('../../../assets/logo.jpg');
+  background-size: inherit;
+}

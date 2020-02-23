@@ -1,0 +1,82 @@
+<!--<h2 mat-dialog-title>Create Job</h2>-->
+<!--<mat-dialog-content>-->
+<!--  <mat-grid-list cols="2" rowHeight="6:1">-->
+<!--    <mat-grid-tile>-->
+<!--      <mat-form-field>-->
+<!--        <input matInput placeholder="name" [(ngModel)]="data.pages">-->
+<!--      </mat-form-field>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <mat-form-field>-->
+<!--        <input matInput placeholder="group">-->
+<!--      </mat-form-field>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <mat-form-field>-->
+<!--        <input matInput placeholder="to">-->
+<!--      </mat-form-field>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <mat-form-field>-->
+<!--        <input matInput placeholder="cc">-->
+<!--      </mat-form-field>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <mat-form-field>-->
+<!--        <input matInput placeholder="bcc">-->
+<!--      </mat-form-field>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile>-->
+<!--      <mat-form-field>-->
+<!--        <input matInput placeholder="subject">-->
+<!--      </mat-form-field>-->
+<!--    </mat-grid-tile>-->
+<!--    <mat-grid-tile colspan="2">-->
+<!--      <mat-form-field>-->
+<!--        <textarea matInput placeholder="message"></textarea>-->
+<!--      </mat-form-field>-->
+<!--    </mat-grid-tile>-->
+<!--  </mat-grid-list>-->
+<!--</mat-dialog-content>-->
+<!--<mat-dialog-actions>-->
+<!--  <button mat-raised-button mat-dialog-close>Close</button>-->
+<!--  <button mat-raised-button [mat-dialog-close]>Create</button>-->
+<!--</mat-dialog-actions>-->
+
+
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <mat-card class="example-card" style="margin: 10px">
+          <!--  <img mat-card-image src="../../assets/logo.jpg" alt="Photo of a Shiba Inu">-->
+          <mat-card-header>
+            <div mat-card-avatar class="avatarImage"></div>
+            <mat-card-title>{{data.nomThematique}}</mat-card-title>
+            <mat-card-subtitle>{{data.typeProduction.libelecourt|uppercase}}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p style="font-style: italic">{{data.libelelong}}</p>
+            <p class="font-weight-light card-text">Volumes : {{data.numvol}}</p>
+            <p class="font-weight-light card-text">Pages : {{data.pages}}</p>
+            <p class="font-weight-light card-text">Langue : {{data.langue}}</p>
+            <p class="font-weight-light card-text">Type : {{data.typeProduction.sousTypeProduction.libelecourt | titlecase}}</p>
+            <div *ngFor="let auteur of data.chercheurProductions">
+              <p *ngIf="auteur.miseEnLignePar === true" class="font-weight-light card-text">
+                Mise en ligne par : {{auteur.chercheur.prenom+" "+auteur.chercheur.nom}}
+              </p>
+            </div>
+          </mat-card-content>
+          <mat-card-footer class="text-center">
+            <mat-label>Auteur(s) :
+              <span style="font-style: italic; color: deepskyblue" *ngFor="let auteur of data.chercheurProductions">
+                {{auteur.chercheur.prenom+" "+auteur.chercheur.nom}}
+              </span>
+            </mat-label>
+            <h6 style="font-size: 12px; font-style: oblique">{{data.datemiseenligne | date}}</h6>
+          </mat-card-footer>
+<!--          <mat-card-actions>-->
+<!--            <button mat-raised-button color="primary" (click)="onDetailPublication(pub.idProduction)">Détails</button>-->
+<!--            <button mat-raised-button color="accent">Télécharger</button>-->
+<!--          </mat-card-actions>-->
+        </mat-card>
+      </div>
+</div>

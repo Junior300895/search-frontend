@@ -1,0 +1,119 @@
+<div class="container mat-elevation-z8">
+  <div *ngIf="show == 'listappeloffres'">
+    <div class="example-button-row">
+      <button mat-raised-button color="primary" (click)="showForm()">Créer AO</button>
+    </div>
+
+    <div class="alert alert-danger" *ngIf="succes == 'deletesuccess'">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>Success!</strong> <a href="#" class="alert-link"> Suppression réussie </a>.
+    </div>
+
+    <mat-form-field>
+      <mat-label>Recherche</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium">
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> Identifiant </th>
+        <td mat-cell *matCellDef="let element"> {{element.idAppeloffre}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description projet </th>
+        <td mat-cell *matCellDef="let element"> {{element.description_projet}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dateparution">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Date parution </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.date_parution | date}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="datedepot">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Date limite dépôt </th>
+        <td mat-cell *matCellDef="let element" class="text-center"> {{element.date_limite_depot | date}} </td>
+      </ng-container>
+
+      <!-- Action-->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Action </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <button mat-raised-button color="primary" (click)="onGetAppeldoffre(element.idAppeloffre)">Modifier</button>
+          <button mat-raised-button color="warn" (click)="onDelete(element.idAppeloffre)">Supprimer</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  <mat-paginator [hidden]="show != 'listappeloffres'" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+  <!--  Formulaire d'ajout de production-->
+  <div *ngIf="show=='formAO'">
+    <div class="example-button-row">
+      <button mat-raised-button color="accent" (click)="onListeAppeloffre()">Voir liste appels d'offres</button>
+    </div>
+
+    <mat-toolbar>
+      <span>Formulaire création appel d'offre</span>
+    </mat-toolbar>
+    <mat-card class="my-card col-6">
+      <mat-card-content>
+        <mat-form-field class="full-width">
+          <mat-label>Libele</mat-label>
+          <textarea  matInput  placeholder="Libele"  name="libele" [(ngModel)]="appeloffre.intitule" required></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Description projet</mat-label>
+          <input  matInput  placeholder="Revue lieu" name="revuelieu" [(ngModel)]="appeloffre.description_projet" required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Montant</mat-label>
+          <input  matInput  placeholder="Montant" name="revuelieu" [(ngModel)]="appeloffre.montant" required>
+        </mat-form-field>
+
+        <div class="row">
+          <mat-form-field class="col-6">
+            <mat-label>Emetteur</mat-label>
+            <input  matInput  placeholder="Emetteur" name="revuelieu" [(ngModel)]="appeloffre.emetteur" required>
+          </mat-form-field>
+
+          <mat-form-field class="col-6">
+            <mat-select placeholder="Renseigner thematique:" required [(ngModel)]="thematique.libeleCourt">
+              <mat-option *ngFor="let th of thematiques" [value]="th.libeleCourt">
+                {{ th.libeleCourt }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field color="accent" class="col-6">
+            <mat-label>Date début travaux</mat-label>
+            <input matInput [matDatepicker]="picker1" placeholder="Date parution" [(ngModel)]="appeloffre.date_parution">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field color="accent" class="col-6">
+            <mat-label>Date limite dépôt</mat-label>
+            <input matInput [matDatepicker]="picker2" placeholder="Date limite dépôt" [(ngModel)]="appeloffre.date_limite_depot">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+      </mat-card-content>
+      <mat-card-actions>
+        <!--REGISTER BUTTON HERE-->
+        <button mat-raised-button (click)="onSaveAO()" color="primary">Valider</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+</div>

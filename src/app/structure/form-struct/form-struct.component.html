@@ -1,0 +1,51 @@
+  <mat-card class="my-card">
+    <mat-card-header style="justify-content: center">Formulaire d'ajout d'unité</mat-card-header>
+    <mat-card-content>
+      <mat-form-field class="full-width">
+        <mat-label>Libele</mat-label>
+        <textarea  matInput  placeholder="Libele"  name="libele" [(ngModel)]="data.libeleCourt" required></textarea>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Adresse</mat-label>
+        <input  matInput  placeholder="Adresse" name="adresse" [(ngModel)]="data.adresse" required>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
+        <input  matInput  placeholder="Email" name="email" [(ngModel)]="data.email" required>
+      </mat-form-field>
+
+      <div class="row">
+        <mat-form-field class="full-width col-6">
+          <mat-select placeholder="Renseigner Etablissement:" [(ngModel)]="data.structure">
+            <mat-option *ngFor="let th of data.structures" [value]="th.libeleCourt">
+              {{ th.libeleCourt }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width col-6">
+          <mat-select placeholder="Renseigner type unite:" [(ngModel)]="data.typeUnite">
+            <mat-option *ngFor="let typepub of data.typeUnites" [value]="typepub.libeleCourt">
+              {{ typepub.libeleCourt }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width col-6">
+          <mat-select placeholder="Renseigner Responsable Unité:" [(ngModel)]="data.chercheur">
+            <mat-option *ngFor="let ch of data.chercheurs" [value]="ch.email">
+              {{ ch.email }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <!--REGISTER BUTTON HERE-->
+<!--      <button mat-raised-button (click)="onSaveUnite()" color="primary">Valider</button>-->
+      <button mat-raised-button color="primary" [mat-dialog-close]="data" cdkFocusInitial>Valider</button>
+    </mat-card-actions>
+  </mat-card>
+

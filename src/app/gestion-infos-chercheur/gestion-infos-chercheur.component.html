@@ -1,0 +1,199 @@
+<div class="search-div">
+  <div class="example-button-row">
+    <button mat-raised-button (click)="onFormInfo()"><i class="material-icons">add_box</i>Créer</button>
+  </div>
+
+</div>
+<div class="mat-elevation-z8">
+  <div class="row">
+<!--    Thematiques-->
+    <div class="col-sm-6">
+      <h6 class="text-center text-info text-capitalize">Thematique</h6>
+      <mat-table [dataSource]="dataSourceThematique"  matSort>
+
+<!--        <ng-container matColumnDef="id">-->
+<!--          <mat-header-cell *matHeaderCellDef  mat-sort-header>Libele</mat-header-cell>-->
+<!--          <mat-cell *matCellDef="let element" style="font-weight: bold">{{element.idThematique}}</mat-cell>-->
+<!--        </ng-container>-->
+        <ng-container matColumnDef="libeleCourt">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Libele</mat-header-cell>
+          <mat-cell *matCellDef="let element" style="font-weight: bold">{{element.libeleCourt}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button mat-raised-button (click)="onModifyThematique(row.libeleCourt)">
+              <i class="material-icons">create</i>
+            </button>
+            <button mat-raised-button style="color: red" (click)="onDeleteThematique(row.libeleCourt)">
+              <i class="material-icons">delete</i>
+            </button>
+            <!--        <button mat-icon-button><mat-icon>launch</mat-icon></button>-->
+            <!--        <button mat-icon-button color="warn"><mat-icon>delete_outline</mat-icon></button>-->
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="loading">
+          <mat-footer-cell *matFooterCellDef>
+            Loading data...
+          </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef>
+            No data.
+          </mat-footer-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <!--    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>-->
+        <!--    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>-->
+      </mat-table>
+      <mat-paginator #paginatorth [pageSizeOptions]="[3, 6]" [pageSize]="3" [pageSize]="5" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <!--    Fonction-->
+    <div class="col-sm-6">
+      <h6 class="text-center text-info text-capitalize">Fonction</h6>
+      <mat-table [dataSource]="dataSourceFonction"  matSort>
+
+<!--        <ng-container matColumnDef="id">-->
+<!--          <mat-header-cell *matHeaderCellDef  mat-sort-header>Libele</mat-header-cell>-->
+<!--          <mat-cell *matCellDef="let element" style="font-weight: bold">{{element.idFonction}}</mat-cell>-->
+<!--        </ng-container>-->
+        <ng-container matColumnDef="libeleCourt">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Libele</mat-header-cell>
+          <mat-cell *matCellDef="let element" style="font-weight: bold">{{element.libeleCourt}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button mat-raised-button (click)="onModifyFonction(row.libeleCourt)">
+              <i class="material-icons">create</i>
+            </button>
+            <button mat-raised-button style="color: red" (click)="onDeleteFonction(row.libeleCourt)">
+              <i class="material-icons">delete</i>
+            </button>
+            <!--        <button mat-icon-button><mat-icon>launch</mat-icon></button>-->
+            <!--        <button mat-icon-button color="warn"><mat-icon>delete_outline</mat-icon></button>-->
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="loading">
+          <mat-footer-cell *matFooterCellDef>
+            Loading data...
+          </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef>
+            No data.
+          </mat-footer-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <!--    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>-->
+        <!--    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>-->
+      </mat-table>
+      <mat-paginator #paginatorfct [pageSizeOptions]="[3, 6]" [pageSize]="3" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <!--    Grades  -->
+    <div class="col-sm-6">
+      <h6 class="text-center text-info text-capitalize">Grade</h6>
+      <mat-table [dataSource]="dataSourceGrade"  matSort>
+
+<!--        <ng-container matColumnDef="id">-->
+<!--          <mat-header-cell *matHeaderCellDef  mat-sort-header>Libele</mat-header-cell>-->
+<!--          <mat-cell *matCellDef="let element" style="font-weight: bold">{{element.idGrade}}</mat-cell>-->
+<!--        </ng-container>-->
+
+        <ng-container matColumnDef="libeleCourt">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Libele</mat-header-cell>
+          <mat-cell *matCellDef="let element" style="font-weight: bold">{{element.libeleCourt}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button mat-raised-button (click)="onModifyGrade(row.libeleCourt)">
+              <i class="material-icons">create</i>
+            </button>
+            <button mat-raised-button style="color: red" (click)="onDeleteGrade(row.libeleCourt)">
+              <i class="material-icons">delete</i>
+            </button>
+            <!--        <button mat-icon-button><mat-icon>launch</mat-icon></button>-->
+            <!--        <button mat-icon-button color="warn"><mat-icon>delete_outline</mat-icon></button>-->
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="loading">
+          <mat-footer-cell *matFooterCellDef>
+            Loading data...
+          </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef>
+            No data.
+          </mat-footer-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <!--    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>-->
+        <!--    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>-->
+      </mat-table>
+      <mat-paginator #paginatorgrad [pageSizeOptions]="[3, 6]" [pageSize]="3" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <!--    Statut-->
+    <div class="col-sm-6">
+      <h6 class="text-center text-info text-capitalize">Statut</h6>
+      <mat-table [dataSource]="dataSourceStatut"  matSort>
+
+<!--        <ng-container matColumnDef="id">-->
+<!--          <mat-header-cell *matHeaderCellDef  mat-sort-header>Libele</mat-header-cell>-->
+<!--          <mat-cell *matCellDef="let element" style="font-weight: bold">{{element.idStatut}}</mat-cell>-->
+<!--        </ng-container>-->
+
+        <ng-container matColumnDef="libeleCourt">
+          <mat-header-cell *matHeaderCellDef  mat-sort-header>Libele</mat-header-cell>
+          <mat-cell *matCellDef="let element" style="font-weight: bold">{{element.libeleCourt}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button mat-raised-button (click)="onModifyStatut(row.libeleCourt)">
+              <i class="material-icons">create</i>
+            </button>
+            <button mat-raised-button style="color: red" (click)="onDeleteStatut(row.libeleCourt)">
+              <i class="material-icons">delete</i>
+            </button>
+            <!--        <button mat-icon-button><mat-icon>launch</mat-icon></button>-->
+            <!--        <button mat-icon-button color="warn"><mat-icon>delete_outline</mat-icon></button>-->
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="loading">
+          <mat-footer-cell *matFooterCellDef>
+            Loading data...
+          </mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+          <mat-footer-cell *matFooterCellDef>
+            No data.
+          </mat-footer-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <!--    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>-->
+        <!--    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>-->
+      </mat-table>
+      <mat-paginator #paginatorstat [pageSizeOptions]="[3, 6]" [pageSize]="3" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</div>

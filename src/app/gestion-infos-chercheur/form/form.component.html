@@ -1,0 +1,32 @@
+<mat-toolbar>
+  <!--  <span>{{service.form.controls['$key'].value?"Modify Employee":"New Employee"}}</span>-->
+  <span class="fill-remaining-space"></span>
+  <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1"><mat-icon>clear</mat-icon></button>
+</mat-toolbar>
+  <mat-grid-list cols="2">
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <input name="libele" matInput placeholder="Libele*" [(ngModel)]="data.libele">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-select matInput placeholder="Type caractéristique" [(ngModel)]="data.type">
+            <mat-option value="Thematique"> Thematique </mat-option>
+            <mat-option value="Fonction"> Fonction </mat-option>
+            <mat-option value="Grade"> Grade </mat-option>
+            <mat-option value="Statut"> Statut </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile class="text-center">
+      <div class="controles-container">
+        <div class="button-row">
+          <button mat-raised-button color="warn" (click)="onNoClick()">Clear</button>
+          <button mat-raised-button color="primary" [mat-dialog-close]="data" cdkFocusInitial>Submit</button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
