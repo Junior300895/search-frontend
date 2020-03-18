@@ -10,7 +10,7 @@ import {ChercheurService} from './chercheur.service';
 })
 export class AppeldoffresService {
   thematique:any
-  private host:string="http://localhost:8080/api/ms-ao"
+  private host:string="http://localhost:9101/api/ms-ao"
 
   constructor(private http : HttpClient, private authService : AuthenticationService,
               private chercheurService:ChercheurService) { }
@@ -19,9 +19,9 @@ export class AppeldoffresService {
     return this.http.get(this.host+"/appeloffres/"+idAO)
   }
   listAppeloffre(){
-    //let headers=new HttpHeaders({'authorization':'Bearer '+this.authService.jwt})
-    //return this.http.get(this.host+"/appeloffres",{headers:headers})
-    return this.http.get(this.host+"/appeloffres")
+    let headers=new HttpHeaders({'authorization':'Bearer '+this.authService.jwt})
+    return this.http.get(this.host+"/appeloffres",{headers:headers})
+    //return this.http.get(this.host+"/appeloffres")
   }
   saveAppeloffre(appeloffre:Appeloffre, lcThematique:string){
     return this.http.post(this.host+"/saveAO/"+lcThematique,appeloffre);

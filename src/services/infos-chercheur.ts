@@ -10,7 +10,7 @@ import {ChercheurService} from './chercheur.service';
 })
 export class InfosChercheur {
   thematique:any
-  private host:string="http://localhost:8080/api/ms-ch"
+  private host:string="http://localhost:9101/api/ms-ch"
 
   constructor(private http : HttpClient, private authService : AuthenticationService,
               ){ }

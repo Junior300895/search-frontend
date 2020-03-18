@@ -7,8 +7,7 @@ import {Production} from '../model/Production';
 })
 
 export class ProductionService {
-  private host:string="http://localhost:8080/api/ms-pubcom"
-  //private host:string="http://localhost:9004"
+  private host:string="http://localhost:9101/api/ms-pubcom"
 
   constructor(private http : HttpClient) { }
 
@@ -36,8 +35,15 @@ export class ProductionService {
   getPublication(idPub:number){
     return this.http.get(this.host+"/productions/"+idPub)
   }
-  getTypePublications(){
+  getTypeProductions(){
     return this.http.get(this.host+"/typeProductions")
+  }
+
+  getTypeProductionsByPublication(){
+    return this.http.get(this.host+"/typeProductionsBySoustype/Publication")
+  }
+  getTypeProductionsByCommunication(){
+    return this.http.get(this.host+"/typeProductionsBySoustype/Communication")
   }
   deleteProduction(id : number){
     return this.http.delete(this.host+"/deleteProduction/"+id)

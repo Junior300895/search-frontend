@@ -7,7 +7,7 @@ import {AppUser} from '../model/AppUser';
   providedIn: 'root'
 })
 export class StructureService {
-  private host:string="http://localhost:8080/api"
+  private host:string="http://localhost:9101/api"
 
   constructor(private http : HttpClient, private authService : AuthenticationService) { }
 

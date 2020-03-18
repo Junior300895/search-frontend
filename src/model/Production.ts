@@ -20,11 +20,12 @@ export class Production {
     "idTypeProduction" : number
     "libelecourt": string
     "libelelong": string
-  }
+  };
   chercheurProductions: [{
       id : number,
       rangChercheur : string,
       nomChercheur : string,
       idChercheur : number
-  }]
+  }];
+  fichier : string;
 }

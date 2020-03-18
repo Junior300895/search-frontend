@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,10 +21,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import {AppeldoffresService} from '../services/appeldoffres.service';
 import {AuthenticationService} from './login/authentication.service';
-import {ErrorInterceptor} from './login/ErrorInterceptor';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { UsersComponent } from './users/users.component';
-import {ChercheurService} from '../services/chercheur.service';
 import { ChercheursComponent } from './chercheurs/chercheurs.component';
 import { GestionInfosChercheurComponent } from './gestion-infos-chercheur/gestion-infos-chercheur.component';
 import { FormComponent } from './gestion-infos-chercheur/form/form.component';
@@ -33,6 +31,13 @@ import {StructureComponent} from './structure/structure.component';
 import { FormStructComponent } from './structure/form-struct/form-struct.component';
 import {NgxMatSelectSearchModule} from 'ngx-mat-select-search';
 import {AppeloffreComponent} from './appeloffre/appeloffre.component';
+import {KeycloakSecurityService} from '../services/keycloak-security-service';
+import {ErrorInterceptor} from './login/ErrorInterceptor';
+import {MaterialFileInputModule} from 'ngx-material-file-input';
+
+export function kcFactory(kcSecurity: KeycloakSecurityService) {
+  return ()=>kcSecurity.init()
+}
 
 @NgModule({
   declarations: [
@@ -56,15 +61,21 @@ import {AppeloffreComponent} from './appeloffre/appeloffre.component';
     MatSidenavModule, MatListModule, MatFormFieldModule, MatTableModule, MatPaginatorModule,
     MatNativeDateModule, MatDatepickerModule, MatCheckboxModule, MatInputModule, MatRadioModule, MatSelectModule,
     NgbModule.forRoot(), MatMenuModule, MatStepperModule, MatGridListModule, MatDialogModule,MatSnackBarModule,
-    NgxMatSelectSearchModule,
+    MaterialFileInputModule, NgxMatSelectSearchModule,
   ],
   providers: [HttpClient,ConfirmationDialogService, AppeldoffresService, AuthenticationService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
       multi: true
-    }
-
+    },
+    KeycloakSecurityService,
+    {
+      provide: APP_INITIALIZER,
+      deps: [KeycloakSecurityService],
+      useFactory: kcFactory,
+      multi: true
+    },
   ],
   entryComponents: [
     ConfirmationDialogComponent, FormComponent, DetailsProductionComponent, FormStructComponent ],

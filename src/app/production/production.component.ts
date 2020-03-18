@@ -9,6 +9,7 @@ import {ProductionService} from '../../services/production.service';
 import {Observable} from 'rxjs';
 import {MatDialog} from '@angular/material';
 import {DetailsProductionComponent} from './details-production/details-production.component';
+import {UploadService} from '../../services/upload.service';
 
 /**
  * @title Table with pagination
@@ -37,7 +38,7 @@ export class ProductionComponent implements OnInit {
 
   constructor(private productionservice : ProductionService,private changeDetectorRef: ChangeDetectorRef,
               private chercheurservice : ChercheurService, private dialog: MatDialog,
-              private route : ActivatedRoute) {
+              private route : ActivatedRoute, private uploadService : UploadService) {
   }
 
   ngOnInit() {
@@ -46,7 +47,6 @@ export class ProductionComponent implements OnInit {
         this.getPublications()
         this.show="pub"
       }else if ("com" == params.get("id")){
-        //this.listeCommunication()
         this.getCommunications()
         this.show="pub"
       }
@@ -107,7 +107,6 @@ export class ProductionComponent implements OnInit {
 
   onDetailPublication(id:number){
     this.getPublication(id)
-
     setTimeout (() => {
     const dialogRef = this.dialog.open(DetailsProductionComponent, {
       width: '700px',
@@ -121,6 +120,16 @@ export class ProductionComponent implements OnInit {
     }, 100);
   }
 
+  onDonwload(namefile : string) {
+    console.log("namefile => ",namefile)
+    this.uploadService.download(namefile).subscribe(
+      data => {
+        console.log("download succes")
+      }, error => {
+        console.log("erreur download",error)
+      }
+    )
+  }
 }
 
 

@@ -9,6 +9,7 @@ import {ConfirmationDialogService} from '../../services/confirmation-dialog.serv
 import {ChercheurService} from '../../services/chercheur.service';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {NotificationService} from '../../services/notification-service';
+import {UploadService} from '../../services/upload.service';
 
 @Component({
   selector: 'app-gestion-production',
@@ -21,6 +22,8 @@ export class GestionProductionComponent implements OnInit {
   thematiques : Thematique[];
   nomthematique : string
   typepublications : any;
+  typeproductionsbypub : any
+  typeproductionsbycom : any
   typepub : string
 
   show : any
@@ -39,12 +42,15 @@ export class GestionProductionComponent implements OnInit {
   ];
   dataSource : any
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  private uploadedFiles: any;
+  private date: any
+  private namefile: any;
 
   constructor(private productionService : ProductionService,
               private route : ActivatedRoute, private productionservice : ProductionService,
-              private authenticationService: AuthenticationService,
-              private notificationService: NotificationService,
-              private chercheurservice : ChercheurService,private confirmationDialogService: ConfirmationDialogService) {}
+              private authenticationService: AuthenticationService, private notificationService: NotificationService,
+              private chercheurservice : ChercheurService,private confirmationDialogService: ConfirmationDialogService,
+              private uploadService : UploadService) {}
   ngOnInit() {
     this.route.paramMap.subscribe(params=>{
       if("Publication" == params.get("Tp")){
@@ -57,6 +63,8 @@ export class GestionProductionComponent implements OnInit {
     });
     this.show = 'Productions'
     this.getTypePublications()
+    this.getTypeProductionsByCommunication()
+    this.getTypeProductionsByPublication()
     this.listThematique()
   }
   applyFilter(event: Event) {
@@ -142,6 +150,8 @@ export class GestionProductionComponent implements OnInit {
 
   saveProduction(){
     //console.log("typub nomth : ",this.typepub,this.nomthematique)
+    console.log("production saved => ",this.production)
+    console.log("production infos => ",this.typepub,this.nomthematique, this.namefile)
     this.productionservice.saveProduction(this.production,this.typepub,
       "diallodiery301@gmail.com",this.nomthematique).subscribe(
       data=>{
@@ -159,7 +169,7 @@ export class GestionProductionComponent implements OnInit {
       .then((confirmed) =>{
           console.log('User confirmed:', confirmed);
           if (confirmed){
-            this.saveProduction()
+            this.upload()
           }else {
             console.log("annuler")
           }
@@ -167,16 +177,31 @@ export class GestionProductionComponent implements OnInit {
       )
       .catch(() =>
         console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
-
   }
   onCreatePublication(){
     this.show="create-production"
     this.succes=false
   }
   getTypePublications(){
-    this.productionservice.getTypePublications()
+    this.productionservice.getTypeProductions()
       .subscribe(data=>{
         this.typepublications = data
+      }, error1 => {
+        console.log(error1)
+      })
+  }
+  getTypeProductionsByPublication(){
+    this.productionservice.getTypeProductionsByPublication()
+      .subscribe(data=>{
+        this.typeproductionsbypub = data
+      }, error1 => {
+        console.log(error1)
+      })
+  }
+  getTypeProductionsByCommunication(){
+    this.productionservice.getTypeProductionsByCommunication()
+      .subscribe(data=>{
+        this.typeproductionsbycom = data
       }, error1 => {
         console.log(error1)
       })
@@ -227,5 +252,27 @@ export class GestionProductionComponent implements OnInit {
       .catch(() =>
         console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
 
+  }
+
+  fileChange(element) {
+    this.uploadedFiles = element.target.files;
+    this.date = new Date().valueOf()
+    this.namefile = this.date+"_"+this.uploadedFiles[0].name
+    this.production.fichier = this.namefile
+    console.log("upload file : ",this.uploadedFiles, this.namefile)
+  }
+  upload() {
+    let formData = new FormData();
+    for (var i = 0; i < this.uploadedFiles.length; i++) {
+      //formData.append("files", this.uploadedFiles[i], this.namefile);
+      formData.append("files", this.uploadedFiles[i], this.uploadedFiles[i].name);
+    }
+    this.uploadService.upload(formData).subscribe(
+      (response) => {
+        console.log('response received is ', response);
+        this.saveProduction()
+      },error => {
+        console.log(error)
+      })
   }
 }

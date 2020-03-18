@@ -7,7 +7,7 @@ import {Chercheur} from '../model/Chercheur';
   providedIn: 'root'
 })
 export class ChercheurService {
-  private host:string="http://localhost:8080/api"
+  private host:string="http://localhost:9101/api"
 
   constructor(private http : HttpClient, private authService : AuthenticationService) { }
 
@@ -15,7 +15,7 @@ export class ChercheurService {
     return this.http.get(this.host+"/ms-ch/getThematique/"+libeleCourt)
   }
   listThematique(){
-    return this.http.get(this.host+"/ms-ch/thematiques")
+    return this.http.get(this.host+"/ms-ch/findAllThematiques")
   }
   findAllChercheurs(){
     return this.http.get(this.host+"/ms-ch/chercheurs")
