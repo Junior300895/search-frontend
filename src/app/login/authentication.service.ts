@@ -7,7 +7,7 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 })
 export class AuthenticationService {
 
-  host:string = "http://localhost:8080"
+  host:string = "http://localhost:9101"
   jwt:string
   username:string
   roles:Array<string>
@@ -17,6 +17,7 @@ export class AuthenticationService {
     return this.http.post(this.host+"/login", data,{observe:'response'})
   }
   getIdentiteUser(){
+    this.loadToken()
     return this.http.get(this.host+"/appUsers/"+this.username)
   }
   saveToken(jwt: string) {
@@ -32,18 +33,23 @@ export class AuthenticationService {
     this.roles = objJWT.roles;
   }
   getUsername(){
+    this.loadToken()
     return this.username
   }
   isAdmin(){
+    this.loadToken()
     return this.roles.indexOf('ADMIN')>=0
   }
   isUser(){
+    this.loadToken()
     return this.roles.indexOf('USER')>=0
   }
   isAuthor(){
+    this.loadToken()
     return this.roles.indexOf('AUTHOR')>=0
   }
   isAuthenticated(){
+    this.loadToken()
     return this.roles && (this.isAdmin() || this.isUser() || this.isAuthor());
   }
 

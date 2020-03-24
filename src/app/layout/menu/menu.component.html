@@ -34,11 +34,11 @@
         <button mat-menu-item routerLink="/infos-chercheurs">Gestion des infos chercheurs</button>
       </mat-menu>
 
-      <a mat-button routerLink="/login">
+      <a mat-button *ngIf="!isAuthenticated()" routerLink="/login">
         Se connecter <mat-icon>touch_app</mat-icon>
       </a>
-      <a mat-button [matMenuTriggerFor]="menuLogin" style="color: whitesmoke">
-        <!-- {{ authenticationService.getUsername() }} -->
+      <a mat-button *ngIf="isAuthenticated()" [matMenuTriggerFor]="menuLogin" style="color: whitesmoke">
+        {{ authenticationService.getUsername() }}
         <mat-icon>perm_identity</mat-icon>
       </a>
       <mat-menu #menuLogin="matMenu">
@@ -62,7 +62,6 @@
     <div style="height: 88vh;">
 
       <router-outlet></router-outlet>
-
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

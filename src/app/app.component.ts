@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {KeycloakSecurityService} from '../services/keycloak-security-service';
+import { AuthenticationService } from './login/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,18 +10,24 @@ import {KeycloakSecurityService} from '../services/keycloak-security-service';
 export class AppComponent implements OnInit{
   title = 'plateforme-seacrh';
 
-  constructor(private securityService : KeycloakSecurityService) {
+  constructor(private authenticationService : AuthenticationService,
+              private router : Router) {
   }
   ngOnInit(): void {
   }
 
-  login(){
-    this.securityService.keycloakAuth.login()
+  logOut(){
+    this.authenticationService.logOut()
+    this.router.navigateByUrl('/login')
   }
-  logout(){
-    this.securityService.keycloakAuth.logout()
+
+  isAdmin(){
+    this.authenticationService.isAdmin()
   }
-  onChangePassword(){
-    this.securityService.keycloakAuth.accountManagement()
+  isUser(){
+    this.authenticationService.isUser()
+  }
+  isAuthenticated() : boolean{
+    return this.authenticationService.isAuthenticated()
   }
 }

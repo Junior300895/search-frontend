@@ -1,7 +1,6 @@
 <div class="container mat-elevation-z8">
-  <div *ngIf="show == 'list-user'">
     <div class="example-button-row">
-      <button mat-raised-button color="primary" (click)="onCreateUser()">Créer un utilisateur</button>
+      <button mat-raised-button color="primary" (click)="onFormUser()">Créer un utilisateur</button>
     </div>
 
     <mat-form-field>
@@ -50,66 +49,6 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+      </table>
+      <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
-  <mat-paginator [hidden]="show != 'list-user'" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-
-  <!--  Formulaire d'ajout de production-->
-  <div *ngIf="show=='create-user'">
-    <div class="example-button-row">
-      <button mat-raised-button color="accent" (click)="onListUser()">Voir utilisateurs</button>
-    </div>
-
-    <mat-toolbar>
-      <span>Créer utlisateur</span>
-    </mat-toolbar>
-    <mat-card class="my-card col-6">
-      <mat-card-content>
-
-        <div class="row">
-          <mat-form-field class="col-6">
-            <mat-label>Prenom</mat-label>
-            <input  matInput  placeholder="Prenom"  name="prenom" [(ngModel)]="appUser.prenom" required>
-          </mat-form-field>
-
-          <mat-form-field class="col-6">
-            <mat-label>Nom</mat-label>
-            <input  matInput  placeholder="Nom" name="nom" [(ngModel)]="appUser.nom" required>
-          </mat-form-field>
-        </div>
-
-        <mat-form-field class="full-width">
-          <mat-label>Email</mat-label>
-          <input  matInput  placeholder="Email" name="mail" [(ngModel)]="appUser.mail" required>
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <mat-label>Password</mat-label>
-          <input  matInput  placeholder="Password" name="password" [(ngModel)]="appUser.password">
-        </mat-form-field>
-
-<!--        <mat-form-field class="full-width">-->
-<!--          <mat-select placeholder="Renseigner profil :" [(ngModel)]="rolesSelected">-->
-<!--            <mat-option *ngFor="let role of roles._embedded.appRoles" [value]="role.roleName">-->
-<!--              {{ role.roleName }}-->
-<!--            </mat-option>-->
-<!--          </mat-select>-->
-<!--        </mat-form-field>-->
-
-        <mat-form-field>
-          <mat-select multiple placeholder="Renseigner profil" [(ngModel)]="rolesSelected" >
-            <mat-option *ngFor="let role of roles._embedded.appRoles" [value]="role.roleName">
-              {{role.roleName}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-      </mat-card-content>
-      <mat-card-actions>
-        <!--REGISTER BUTTON HERE-->
-        <button mat-raised-button (click)="onSaveUser()" color="primary">Valider</button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
-
-</div>

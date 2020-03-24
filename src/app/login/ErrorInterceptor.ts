@@ -19,7 +19,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         console.log("erreur 401")
       }else if(err.status === 403){
         console.log("erreur 403")
-        this.router.navigateByUrl("/login")
+
       }
 
       const error = err.error.message || err.statusText;

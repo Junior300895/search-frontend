@@ -1,3 +1,5 @@
+import { Role } from './role';
+
 export class AppUser {
   id : number;
   mail : string;
@@ -7,8 +9,5 @@ export class AppUser {
   statut : string;
   prenom : string;
   nom : string;
-  roles : [{
-    id:number,
-    roleName:string
-  }]
+  roles : Role
 }

@@ -31,13 +31,10 @@ import {StructureComponent} from './structure/structure.component';
 import { FormStructComponent } from './structure/form-struct/form-struct.component';
 import {NgxMatSelectSearchModule} from 'ngx-mat-select-search';
 import {AppeloffreComponent} from './appeloffre/appeloffre.component';
-import {KeycloakSecurityService} from '../services/keycloak-security-service';
 import {ErrorInterceptor} from './login/ErrorInterceptor';
 import {MaterialFileInputModule} from 'ngx-material-file-input';
-
-export function kcFactory(kcSecurity: KeycloakSecurityService) {
-  return ()=>kcSecurity.init()
-}
+import { FormUsersComponent } from './users/form-users/form-users.component';
+// import { MenuComponent } from './layout/menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +51,8 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
     StructureComponent,
     FormStructComponent,
     AppeloffreComponent,
+    FormUsersComponent,
+    // MenuComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, BrowserAnimationsModule, FormsModule, HttpClientModule, ReactiveFormsModule,
@@ -69,16 +68,11 @@ export function kcFactory(kcSecurity: KeycloakSecurityService) {
       useClass: ErrorInterceptor,
       multi: true
     },
-    KeycloakSecurityService,
-    {
-      provide: APP_INITIALIZER,
-      deps: [KeycloakSecurityService],
-      useFactory: kcFactory,
-      multi: true
-    },
   ],
   entryComponents: [
-    ConfirmationDialogComponent, FormComponent, DetailsProductionComponent, FormStructComponent ],
+    ConfirmationDialogComponent, FormComponent,
+    DetailsProductionComponent, FormStructComponent,
+    FormUsersComponent ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

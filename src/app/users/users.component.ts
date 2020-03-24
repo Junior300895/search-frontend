@@ -5,8 +5,10 @@ import {AppUser} from '../../model/AppUser';
 import {FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatTableDataSource, MatDialog} from '@angular/material';
 import {NotificationService} from '../../services/notification-service';
+import { FormUsersComponent } from './form-users/form-users.component';
+import { Role } from 'src/model/role';
 
 @Component({
   selector: 'app-users',
@@ -17,8 +19,6 @@ export class UsersComponent implements OnInit {
   appUser : AppUser = new AppUser();
   users : AppUser[];
   roles : any
-  show : any
-  succes : any = false
   rolesSelected : Array<string>
 
   registerForm: FormGroup;
@@ -31,22 +31,18 @@ export class UsersComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   constructor(private usersService : UsersService, private notificationService: NotificationService,
-              private confirmationDialogService: ConfirmationDialogService) {
+              private confirmationDialogService: ConfirmationDialogService,
+              private dialog: MatDialog) {
     //this._setSearchSubscription ();
   }
 
   ngOnInit() {
     this.getUsers()
-    this.show='list-user'
     this.listRoles()
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-  onListUser(){
-    this.show = 'list-user'
-    this.succes = false
   }
   getUsers(){
     this.usersService.getUsers().subscribe(
@@ -60,10 +56,10 @@ export class UsersComponent implements OnInit {
       }
     )
   }
-  saveUser(){
-    console.log(this.appUser)
-    console.log(this.rolesSelected)
-    this.usersService.saveUser(this.appUser, this.rolesSelected).subscribe(
+  saveUser(appUser: AppUser, rolesSelected: string[]){
+    console.log(appUser)
+    console.log(rolesSelected)
+    this.usersService.saveUser(appUser, rolesSelected).subscribe(
       data=>{
         console.log(data)
         this.getUsers()
@@ -73,28 +69,23 @@ export class UsersComponent implements OnInit {
       }
     )
   }
-  onSaveUser() {
-    this.confirmationDialogService.confirm('Confirmation...', 'Voulez-vous ajouter ce compte ?')
-      .then((confirmed) =>{
-          console.log('User confirmed:', confirmed);
-          if (confirmed){
-            this.saveUser()
-            console.log("save")
-          }else {
-            console.log("annuler")
-          }
-        }
-      )
-      .catch(() =>
-        console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
-  }
-  onCreateUser(){
-    this.show = 'create-user'
-    this.appUser = new AppUser()
-    this.succes = false
-  }
+  // onSaveUser() {
+  //   this.confirmationDialogService.confirm('Confirmation...', 'Voulez-vous ajouter ce compte ?')
+  //     .then((confirmed) =>{
+  //         console.log('User confirmed:', confirmed);
+  //         if (confirmed){
+  //           this.saveUser()
+  //           console.log("save")
+  //         }else {
+  //           console.log("annuler")
+  //         }
+  //       }
+  //     )
+  //     .catch(() =>
+  //       console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+  // }
   listRoles(){
-    this.usersService.getRessource("http://localhost:8080/appRoles/").subscribe(
+    this.usersService.getRessource("http://localhost:9101/roles/").subscribe(
       data=>{
         this.roles = data
         console.log(data)
@@ -135,7 +126,6 @@ export class UsersComponent implements OnInit {
   }
 
   onModifyUser(mail: string) {
-    this.onCreateUser()
     this.usersService.getUser(mail).subscribe(
       (data : AppUser) => {
         console.log("get user => ",data)
@@ -145,6 +135,28 @@ export class UsersComponent implements OnInit {
       }
     )
   }
+
+  onFormUser() {
+    const dialogRef = this.dialog.open(FormUsersComponent, {
+      width: '600px',
+      height: '500px',
+      data: {appUser: this.appUser, roles: this.roles, rolesSelected: this.rolesSelected}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("Dialog result: ",result);
+      let appUser : AppUser = new AppUser()
+      appUser.prenom = result.prenom
+      appUser.nom = result.nom
+      appUser.mail = result.mail
+      appUser.password = result.password
+
+      console.log('appUser dans userform =>', appUser);
+
+      this.saveUser(appUser, result.rolesSelected)
+    });
+  }
+
 
   /*
  Autosuggestion search

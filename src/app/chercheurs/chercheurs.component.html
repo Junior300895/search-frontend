@@ -45,14 +45,14 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef class="text-center"> Action </th>
         <td mat-cell *matCellDef="let element" class="text-center">
-          <button mat-raised-button color="accent" (click)="onDetail(element.email)">Détails</button>
-          <button mat-raised-button color="primary" (click)="onModify(element.email)">Modifier</button>
-          <button mat-raised-button color="warn" (click)="onDeleteChercheur(element.email)">Supprimer</button>
+          <button mat-raised-button color="accent" (click)="onDetail(element.email)" >Détails</button>
+          <button mat-raised-button color="primary" (click)="onModify(element.email)" >Modifier</button>
+          <button mat-raised-button color="warn" (click)="onDeleteChercheur(element.email)" >Supprimer</button>
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
     </table>
   </div>
   <mat-paginator [hidden]="show != 'listchercheur'" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
@@ -80,8 +80,6 @@
           <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
             <form [formGroup]="firstFormGroup" (ngSubmit)="form1()" #formone="ngForm">
               <ng-template matStepLabel>Détails chercheurs</ng-template>
-
-
         <div class="row">
           <mat-form-field class="col-6">
             <mat-label>Prenom</mat-label>
@@ -203,11 +201,6 @@
               <button mat-button matStepperPrevious>Back</button>
               <button mat-button (click)="stepper.reset()">Reset</button>
               <button mat-button type="button" color="accent" (click)="onSaveChercheur()">Valider</button>
-<!--              <button mat-button type="button" (click)="formone.ngSubmit.emit();formtwo.ngSubmit.emit()">submit</button>-->
-<!--              <mat-card-actions>-->
-<!--                &lt;!&ndash;REGISTER BUTTON HERE&ndash;&gt;-->
-<!--                <button mat-raised-button (click)="onSaveChercheur()" color="primary">Valider</button>-->
-<!--              </mat-card-actions>-->
             </div>
           </mat-step>
         </mat-horizontal-stepper>

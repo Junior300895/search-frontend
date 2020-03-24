@@ -11,10 +11,10 @@ import {StructureComponent} from './structure/structure.component';
 import {AppeloffreComponent} from './appeloffre/appeloffre.component';
 
 const routes: Routes = [
-  // {path: '', redirectTo: '/login', pathMatch: 'full'},
+  // {path: 'menu', component: MenuComponent},
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: "production/:id", component: ProductionComponent},
   {path: 'productions/:Tp', component: GestionProductionComponent},
-  {path: "login", component: LoginComponent},
   {path: 'appeloffre', component: AppeloffreComponent},
   {path: 'login', component: LoginComponent},
   {path: 'logout', component: LoginComponent},

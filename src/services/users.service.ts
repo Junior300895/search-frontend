@@ -12,24 +12,29 @@ export class UsersService {
   constructor(private http : HttpClient, private authService : AuthenticationService) { }
 
   getUsers(){
+    this.authService.loadToken()
     let headers=new HttpHeaders({'authorization':'Bearer '+this.authService.jwt})
-    return this.http.get(this.host+"/appUsers/users",{headers:headers})
+    return this.http.get(this.host+"/users",{headers:headers})
   }
 
   getRessource(url){
+    this.authService.loadToken()
     let headers=new HttpHeaders({'authorization':'Bearer '+this.authService.jwt})
     return this.http.get(url,{headers:headers})
   }
   saveUser(appUser : AppUser, roles : Array<string>){
+    this.authService.loadToken()
     let headers=new HttpHeaders({'authorization':'Bearer '+this.authService.jwt})
-    return this.http.post(this.host+"/saveUser/"+roles,appUser,{headers:headers})
+    return this.http.post(this.host+"/users/"+roles,appUser,{headers:headers})
   }
   deleteAppUser(email : string){
+    this.authService.loadToken()
     let headers=new HttpHeaders({'authorization':'Bearer '+this.authService.jwt})
-    return this.http.delete(this.host+"/deleteAppUser/"+email,{headers:headers})
+    return this.http.delete(this.host+"/users/"+email,{headers:headers})
   }
   getUser(email : string){
+    this.authService.loadToken()
     let headers=new HttpHeaders({'authorization':'Bearer '+this.authService.jwt})
-    return this.http.get(this.host+"/appUsers/"+email,{headers:headers})
+    return this.http.get(this.host+"/users/"+email,{headers:headers})
   }
 }
