@@ -3,12 +3,10 @@ import {UsersService} from '../../services/users.service';
 import {ConfirmationDialogService} from '../../services/confirmation-dialog.service';
 import {AppUser} from '../../model/AppUser';
 import {FormGroup} from '@angular/forms';
-import {Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import {MatPaginator, MatTableDataSource, MatDialog} from '@angular/material';
 import {NotificationService} from '../../services/notification-service';
 import { FormUsersComponent } from './form-users/form-users.component';
-import { Role } from 'src/model/role';
+import { UpdateUserComponent } from './update/update-user.component';
 
 @Component({
   selector: 'app-users',
@@ -18,7 +16,6 @@ import { Role } from 'src/model/role';
 export class UsersComponent implements OnInit {
   appUser : AppUser = new AppUser();
   users : AppUser[];
-  roles : any
   rolesSelected : Array<string>
 
   registerForm: FormGroup;
@@ -38,7 +35,6 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.getUsers()
-    this.listRoles()
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -56,65 +52,22 @@ export class UsersComponent implements OnInit {
       }
     )
   }
-  saveUser(appUser: AppUser, rolesSelected: string[]){
-    console.log(appUser)
-    console.log(rolesSelected)
-    this.usersService.saveUser(appUser, rolesSelected).subscribe(
-      data=>{
-        console.log(data)
-        this.getUsers()
-        this.notificationService.success("Compte créé !!!")
-      }, error1 => {
-        console.log(error1)
-      }
-    )
-  }
-  // onSaveUser() {
-  //   this.confirmationDialogService.confirm('Confirmation...', 'Voulez-vous ajouter ce compte ?')
-  //     .then((confirmed) =>{
-  //         console.log('User confirmed:', confirmed);
-  //         if (confirmed){
-  //           this.saveUser()
-  //           console.log("save")
-  //         }else {
-  //           console.log("annuler")
-  //         }
-  //       }
-  //     )
-  //     .catch(() =>
-  //       console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
-  // }
-  listRoles(){
-    this.usersService.getRessource("http://localhost:9101/roles/").subscribe(
-      data=>{
-        this.roles = data
-        console.log(data)
-      }, error1 => {
-        console.log(error1)
-      }
-    )
-  }
-
-  deleteUser(email: string) {
-    this.usersService.deleteAppUser(email).subscribe(
-      data => {
-        console.log(data)
-        if(data!=null){
-          this.notificationService.warn("Compte supprimé !!!")
-          this.getUsers()
-        }
-      }, error => {
-        console.log(error)
-      }
-    )
-  }
-
   onDeleteUser(mail: string) {
     this.confirmationDialogService.confirm('Confirmation...', 'Voulez-vous supprimer ce compte ?')
       .then((confirmed) =>{
           console.log('User confirmed:', confirmed);
           if (confirmed){
-            this.deleteUser(mail)
+            this.usersService.deleteAppUser(mail).subscribe(
+              data => {
+                console.log(data)
+                if(data!=null){
+                  this.notificationService.warn("Compte supprimé !!!")
+                  this.getUsers()
+                }
+              }, error => {
+                console.log(error)
+              }
+            )
           }else {
             console.log("annuler")
           }
@@ -122,25 +75,41 @@ export class UsersComponent implements OnInit {
       )
       .catch(() =>
         console.log('User dismissed the dialog (e.g., by using ESC, clicking the cross icon, or clicking outside the dialog)'));
+  }
+
+  onModifyUser(utilisateur : AppUser) {
+    const dialogRef = this.dialog.open(UpdateUserComponent, {
+      width: '600px',
+      height: '500px',
+      data: {} = utilisateur
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("Dialog result: ",result);
+      let appUser : AppUser = new AppUser()
+      appUser.prenom = result.prenom
+      appUser.nom = result.nom
+      appUser.mail = result.mail
+
+      console.log('appUser dans userform =>', appUser);
+      this.usersService.updateUser(appUser, result.mail, result.rolesSelected).subscribe(
+        data=>{
+          this.notificationService.success('Compte mis à jour avec succès')
+          this.getUsers()
+        },error=>{
+          console.log(error);
+
+        }
+      )
+    });
 
   }
 
-  onModifyUser(mail: string) {
-    this.usersService.getUser(mail).subscribe(
-      (data : AppUser) => {
-        console.log("get user => ",data)
-        this.appUser = data
-      }, error => {
-        console.log(error)
-      }
-    )
-  }
-
-  onFormUser() {
+  onAddUser() {
     const dialogRef = this.dialog.open(FormUsersComponent, {
       width: '600px',
       height: '500px',
-      data: {appUser: this.appUser, roles: this.roles, rolesSelected: this.rolesSelected}
+      data: {appUser: this.appUser, rolesSelected: this.rolesSelected}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -153,7 +122,15 @@ export class UsersComponent implements OnInit {
 
       console.log('appUser dans userform =>', appUser);
 
-      this.saveUser(appUser, result.rolesSelected)
+      this.usersService.saveUser(appUser, result.rolesSelected).subscribe(
+        data=>{
+          console.log(data)
+          this.getUsers()
+          this.notificationService.success("Compte créé !!!")
+        }, error1 => {
+          console.log(error1)
+        }
+      )
     });
   }
 

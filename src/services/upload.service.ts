@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { AuthenticationService } from 'src/app/login/authentication.service';
 
 
 @Injectable({
@@ -10,12 +11,18 @@ export class UploadService {
   private host:string="http://localhost:9101/api/ms-noti"
   //private host:string="http://localhost:9103"
 
-  constructor(private http : HttpClient) { }
+  constructor(private http : HttpClient,
+              private authService : AuthenticationService) { }
 
   upload(formData){
-    return this.http.post(this.host+"/uploadMultipleFiles/", formData);
+    this.authService.loadToken()
+    let headers=new HttpHeaders({'authorization':'Bearer '+this.authService.jwt})
+    return this.http.post(this.host+"/uploadFile/", formData,{headers:headers});
   }
   download(nameFile : string){
-    return this.http.get(this.host+"/downloadFile/"+nameFile);
+    this.authService.loadToken()
+    let headers=new HttpHeaders({'authorization':'Bearer '+this.authService.jwt})
+    return this.http.get(this.host+"/downloadFile/"+nameFile,
+        {responseType: 'blob',headers:headers} );
   }
 }

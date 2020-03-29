@@ -9,5 +9,5 @@ export class AppUser {
   statut : string;
   prenom : string;
   nom : string;
-  roles : Role
+  roles : Array<Role>
 }

@@ -27,6 +27,11 @@ export class UsersService {
     let headers=new HttpHeaders({'authorization':'Bearer '+this.authService.jwt})
     return this.http.post(this.host+"/users/"+roles,appUser,{headers:headers})
   }
+  updateUser(appUser : AppUser, email: string, roles : Array<string>){
+    this.authService.loadToken()
+    let headers=new HttpHeaders({'authorization':'Bearer '+this.authService.jwt})
+    return this.http.put(this.host+"/users/"+email+"/"+roles,appUser,{headers:headers})
+  }
   deleteAppUser(email : string){
     this.authService.loadToken()
     let headers=new HttpHeaders({'authorization':'Bearer '+this.authService.jwt})

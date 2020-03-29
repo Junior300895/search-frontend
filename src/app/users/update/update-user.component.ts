@@ -1,50 +1,44 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ConfirmationDialogService } from 'src/services/confirmation-dialog.service';
-import { FormGroup, FormBuilder, Validators, FormControlName } from '@angular/forms';
-import { AppUser } from 'src/model/AppUser';
 import { UsersService } from 'src/services/users.service';
+import { Role } from 'src/model/role';
 
 @Component({
-  selector: 'app-form-users',
-  templateUrl: './form-users.component.html',
-  styleUrls: ['./form-users.component.css']
+  selector: 'app-update',
+  templateUrl: './update-user.component.html',
+  styleUrls: ['./update-user.component.css']
 })
-export class FormUsersComponent implements OnInit {
+export class UpdateUserComponent implements OnInit {
 
   form: FormGroup;
   roles : any
-  hide = true;
+  rolesChercheur: Array<any> = []
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              public dialogRef: MatDialogRef<FormUsersComponent>,
-              private confirmationDialogService: ConfirmationDialogService,
-              private _formBuilder: FormBuilder,
-              private usersService : UsersService,) {
-    this.form = data
-  }
+  public dialogRef: MatDialogRef<UpdateUserComponent>,
+  private confirmationDialogService: ConfirmationDialogService,
+  private _formBuilder: FormBuilder,
+  private usersService : UsersService,) { }
 
   ngOnInit() {
     this.listRoles()
 
-    this.form = this._formBuilder.group({
-      prenom: ['', Validators.required],
-      nom: ['', Validators.required],
-      mail: ['', Validators.email],
-      password: ['', Validators.required],
-      rolesSelected: ['', Validators.required],
+    this.data.roles.forEach(element => {
+      this.rolesChercheur.push(element.roleName)
     });
-  }
-   /* Shorthands for form controls (used from within template) */
-  //  get password1() { return this.form.get('password1'); }
-  //  get password2() { return this.form.get('password2'); }
+    console.log('rolesChercheur : ', this.rolesChercheur);
 
-  // onPasswordInput() {
-  //   if (this.form.hasError('passwordMismatch'))
-  //     this.password2.setErrors([{'passwordMismatch': true}]);
-  //   else
-  //     this.password2.setErrors(null);
-  // }
+    this.form = this._formBuilder.group({
+      prenom: [this.data.prenom, Validators.required],
+      nom: [this.data.nom, Validators.required],
+      mail: [this.data.mail, Validators.email],
+      rolesSelected: [this.rolesChercheur, Validators.required],
+    });
+
+  }
+
   public hasError = (controlName: string, errorName: string) =>{
     return this.form.controls[controlName].hasError(errorName);
   }

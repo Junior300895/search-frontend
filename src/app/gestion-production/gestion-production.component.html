@@ -1,7 +1,6 @@
   <div class="container mat-elevation-z8">
-    <div *ngIf="show == 'Productions'">
       <div class="example-button-row">
-        <button mat-raised-button color="primary" (click)="showForm()">Créer publication</button>
+        <button mat-raised-button color="primary" (click)="addProduction()">Créer production</button>
       </div>
 
       <mat-form-field>
@@ -45,127 +44,20 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef class="text-center"> Action </th>
         <td mat-cell *matCellDef="let element" class="text-center">
-          <button mat-raised-button color="primary">Modifier</button>
-          <button mat-raised-button color="warn" (click)="onDeleteProd(element.idProduction)">Supprimer</button>
+          <button mat-button color="primary">
+            <mat-icon inline=true>create</mat-icon>
+          </button>
+          <button mat-button color="warn" (click)="onDeleteProd(element.idProduction)">
+            <mat-icon inline=true>delete_outline</mat-icon>
+          </button>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
-    <mat-paginator [hidden]="show != 'Productions'" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 
-<!--  Formulaire d'ajout de production-->
-    <div *ngIf="show=='formProduction'">
-      <div class="example-button-row">
-        <button mat-raised-button color="accent" (click)="onListPublications()">Voir production</button>
-      </div>
-
-      <mat-toolbar>
-        <span>Formulaire d'ajout d'une production</span>
-      </mat-toolbar>
-      <mat-card class="my-card col-8 justify-content-center">
-        <mat-card-content>
-
-          <section class="example-section">
-            <label class="text-info">Cochez le type de production à publier :</label>
-            <mat-radio-group>
-              <mat-radio-button class="example-margin" #big value="after" (change)="0" checked>Publication</mat-radio-button>
-              <mat-radio-button class="example-margin" #small value="before" (change)="0">Communication</mat-radio-button>
-            </mat-radio-group>
-          </section>
-
-          <div *ngIf="big.checked">
-            <mat-form-field class="full-width">
-              <mat-select placeholder="Veuillez renseigner le type de publication :" [(ngModel)]="typepub">
-                <mat-option *ngFor="let typepub of typeproductionsbypub" [value]="typepub.libelecourt">
-                  {{ typepub.libelecourt }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-
-          <div *ngIf="small.checked">
-            <mat-form-field class="full-width">
-              <mat-select placeholder="Veuillez renseigner le type de communication :" [(ngModel)]="typepub">
-                <mat-option *ngFor="let typepub of typeproductionsbycom" [value]="typepub.libelecourt">
-                  {{ typepub.libelecourt }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-
-          <mat-form-field class="full-width">
-            <mat-label>Libele</mat-label>
-            <textarea  matInput  placeholder="Libele"  name="libele" [(ngModel)]="production.libelelong" required></textarea>
-          </mat-form-field>
-
-          <mat-form-field class="full-width">
-            <mat-label>Revue lieu</mat-label>
-            <input  matInput  placeholder="Revue lieu" name="revuelieu" [(ngModel)]="production.revuelieu" required>
-          </mat-form-field>
-
-          <div class="row">
-            <mat-form-field class="full-width col-6">
-              <mat-label>Adresse</mat-label>
-              <input  matInput  placeholder="Address" name="adresse" [(ngModel)]="production.adresse" required>
-            </mat-form-field>
-
-            <mat-form-field class="full-width col-6">
-              <mat-label>Directeur publication</mat-label>
-              <input  matInput  placeholder="Directeur publication" name="directeurpub" [(ngModel)]="production.directeurpub">
-            </mat-form-field>
-          </div>
-
-          <div class="row">
-            <mat-form-field class="full-width col-6">
-              <mat-label>Num volume</mat-label>
-              <input  matInput  placeholder="Password"  name="numvolume" [(ngModel)]="production.numvol">
-            </mat-form-field>
-
-            <mat-form-field class="full-width col-6">
-              <mat-label>Pages</mat-label>
-              <input  matInput  placeholder="Password" name="pages" [(ngModel)]="production.pages">
-            </mat-form-field>
-          </div>
-
-          <div class="row">
-            <mat-form-field class="full-width col-6">
-              <mat-select placeholder="Renseigner Thematique:" [(ngModel)]="nomthematique">
-                <mat-option *ngFor="let th of thematiques" [value]="th.libeleCourt">
-                  {{ th.libeleCourt }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field class="full-width col-6">
-              <ngx-mat-file-input placeholder="Télécharger fichier" name="file" (change)="fileChange($event)"></ngx-mat-file-input>
-              <mat-icon matSuffix>folder</mat-icon>
-            </mat-form-field>
-
-<!--            <div class="input-group">-->
-<!--              <div class="input-group-prepend">-->
-<!--                  <span class="input-group-text upload" id="btnUpload">Upload</span>-->
-<!--                </div>-->
-<!--              <div class="custom-file">-->
-<!--                <form enctype="multipart/form-data">-->
-<!--                  <input type="file" class="custom-file-input" (change)="fileChange($event)" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">-->
-<!--                </form>-->
-<!--                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>-->
-<!--              </div>-->
-<!--            </div>-->
-
-          </div>
-        </mat-card-content>
-        <mat-card-actions>
-          <!--REGISTER BUTTON HERE-->
-          <button mat-raised-button (click)="onSaveProduction()" color="primary">Valider</button>
-<!--          <button mat-raised-button (click)="upload()" color="primary">Valider</button>-->
-        </mat-card-actions>
-      </mat-card>
-    </div>
-
-</div>
 
 

@@ -123,8 +123,17 @@ export class ProductionComponent implements OnInit {
   onDonwload(namefile : string) {
     console.log("namefile => ",namefile)
     this.uploadService.download(namefile).subscribe(
-      data => {
-        console.log("download succes")
+      response => {
+        console.log("download succes", response)
+        let dataType = response.type;
+            let binaryData = [];
+            binaryData.push(response);
+            let downloadLink = document.createElement('a');
+            downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, {type: dataType}));
+            if (namefile)
+                downloadLink.setAttribute('download', namefile);
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
       }, error => {
         console.log("erreur download",error)
       }

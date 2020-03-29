@@ -1,14 +1,8 @@
 <div class="container mat-elevation-z8">
-  <div *ngIf="show == 'listchercheur'">
+
     <div class="example-button-row">
-      <button mat-raised-button color="primary" (click)="onFormChercheur()">Ajouter chercheur</button>
+      <button mat-raised-button color="primary" (click)="onAddChercheur()">Ajout d'un chercheur</button>
     </div>
-
-    <div class="alert alert-success" *ngIf="succes=='deletesuccess'">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>Success!</strong> <a href="#" class="alert-link"> Suppression réussie</a>.
-    </div>
-
     <mat-form-field>
       <mat-label>Recherche</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium">
@@ -45,168 +39,17 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef class="text-center"> Action </th>
         <td mat-cell *matCellDef="let element" class="text-center">
-          <button mat-raised-button color="accent" (click)="onDetail(element.email)" >Détails</button>
-          <button mat-raised-button color="primary" (click)="onModify(element.email)" >Modifier</button>
-          <button mat-raised-button color="warn" (click)="onDeleteChercheur(element.email)" >Supprimer</button>
+          <button mat-button color="primary" (click)="onModify(element)" >
+            <mat-icon inline=true>create</mat-icon>
+          </button>
+          <button mat-button color="warn" (click)="onDeleteChercheur(element.email)" >
+            <mat-icon inline=true>delete_outline</mat-icon>
+          </button>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
     </table>
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
-  <mat-paginator [hidden]="show != 'listchercheur'" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-
-
-
-  <!--  Formulaire d'ajout de production-->
-  <div *ngIf="show=='formchercheur'">
-    <div class="example-button-row">
-      <button mat-raised-button color="accent" (click)="onListChercheur()">Voir chercheurs</button>
-    </div>
-    <div class="alert alert-success" *ngIf="succes==true">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>Success!</strong> <a href="#" class="alert-link"> Chercheur créé avec succès</a>.
-    </div>
-
-    <mat-toolbar>
-      <span>Ajouter chercheur</span>
-    </mat-toolbar>
-    <mat-card class="my-card col-8">
-      <mat-card-content>
-
-        <mat-horizontal-stepper linear #stepper>
-<!--         1-->
-          <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
-            <form [formGroup]="firstFormGroup" (ngSubmit)="form1()" #formone="ngForm">
-              <ng-template matStepLabel>Détails chercheurs</ng-template>
-        <div class="row">
-          <mat-form-field class="col-6">
-            <mat-label>Prenom</mat-label>
-            <input  matInput  formControlName="prenom" placeholder="Prenom"  name="prenom">
-          </mat-form-field>
-
-          <mat-form-field class="col-6">
-            <mat-label>Nom</mat-label>
-            <input  matInput formControlName="nom" placeholder="Nom" name="nom">
-          </mat-form-field>
-        </div>
-
-        <mat-form-field class="full-width">
-          <mat-label>Email</mat-label>
-          <input  matInput  placeholder="Email" name="mail" formControlName="email">
-        </mat-form-field>
-
-        <div class="row">
-          <mat-form-field color="accent" class="col-6">
-            <input matInput [matDatepicker]="picker1" placeholder="Date de naissance" formControlName="ne_le">
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1></mat-datepicker>
-          </mat-form-field>
-
-          <mat-form-field class="full-width" class="col-6">
-            <mat-label>Lieu de naissance</mat-label>
-            <input  matInput  placeholder="Lieu de naissance" name="lieunaiss" formControlName="lieu_de_naissance">
-          </mat-form-field>
-        </div>
-
-        <div class="row">
-          <mat-form-field class="col-6">
-            <mat-label>Nationalite</mat-label>
-            <input  matInput  placeholder="Lieu de naissance" name="nationalite" formControlName="nationalite">
-          </mat-form-field>
-
-          <mat-form-field class="col-6">
-            <mat-label>Adresse</mat-label>
-            <input  matInput  placeholder="Lieu de naissance" name="adresse" formControlName="adresse_perso" required>
-          </mat-form-field>
-        </div>
-
-              <div>
-                <button mat-button matStepperNext>Next</button>
-              </div>
-            </form>
-          </mat-step>
-
-<!--          2-->
-          <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
-                      <form [formGroup]="secondFormGroup" (ngSubmit)="form2()" #formtwo="ngForm">
-                        <ng-template matStepLabel>Informations chercheurs</ng-template>
-                  <div class="row">
-          <mat-form-field class="col-6">
-            <mat-select placeholder="Renseigner thematique:" formControlName="lcThematique" required>
-              <mat-option *ngFor="let th of thematiques" [value]="th.libeleCourt">
-                {{ th.libeleCourt }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field class="col-6">
-            <mat-select placeholder="Renseigner fonction:" formControlName="lcFonction" required>
-              <mat-option *ngFor="let fct of fonctions" [value]="fct.libeleCourt">
-                {{ fct.libeleCourt }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="row">
-          <mat-form-field class="col-6">
-            <mat-select placeholder="Renseigner grade:" formControlName="lcGrade" required>
-              <mat-option *ngFor="let grade of grades" [value]="grade.libeleCourt">
-                {{ grade.libeleCourt }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field class="col-6">
-            <mat-select placeholder="Renseigner statut:" formControlName="lcStatut" required>
-              <mat-option *ngFor="let st of statuts" [value]="st.libeleCourt">
-                {{ st.libeleCourt }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="row">
-          <mat-form-field class="col-6">
-            <mat-select placeholder="Renseigner structure:" formControlName="lcStructure" required>
-              <mat-option *ngFor="let str of structures" [value]="str.libeleCourt">
-                {{ str.libeleCourt }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field class="col-6">
-            <mat-select placeholder="Renseigner unite:" formControlName="lcUniteRecherche" required>
-              <mat-option *ngFor="let uni of unites" [value]="uni.libeleCourt">
-                {{ uni.libeleCourt }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-              <div>
-                <button mat-button matStepperPrevious>Back</button>
-                <button mat-button matStepperNext>Next</button>
-              </div>
-            </form>
-          </mat-step>
-
-<!--          3-->
-          <mat-step>
-            <ng-template matStepLabel>Fait</ng-template>
-            <p>You are now done.</p>
-            <div>
-              <button mat-button matStepperPrevious>Back</button>
-              <button mat-button (click)="stepper.reset()">Reset</button>
-              <button mat-button type="button" color="accent" (click)="onSaveChercheur()">Valider</button>
-            </div>
-          </mat-step>
-        </mat-horizontal-stepper>
-
-      </mat-card-content>
-    </mat-card>
-  </div>
-
-</div>

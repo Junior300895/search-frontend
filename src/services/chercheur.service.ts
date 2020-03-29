@@ -20,9 +20,13 @@ export class ChercheurService {
   findAllChercheurs(){
     return this.http.get(this.host+"/ms-ch/chercheurs")
   }
-  saveChercheur(chercheur : any, lcThe : string, lcFct : string, lcGra : string,
+  saveChercheur(chercheur : any, lcThe : Array<string>, lcFct : string, lcGra : string,
                 lcSta : string, lcStruct : string, lcUnit : string){
     return this.http.post(this.host+"/ms-ch/saveChercheur"+"/"+lcThe+"/"+lcFct+"/"+lcGra+"/"+lcSta+"/"+lcStruct+"/"+lcUnit, chercheur);
+  }
+  updateChercheur(chercheur : any, lcThe : Array<string>, lcFct : string, lcGra : string,
+                  lcSta : string, lcStruct : string, lcUnit : string){
+    return this.http.put(this.host+"/ms-ch/chercheurs"+"/"+lcThe+"/"+lcFct+"/"+lcGra+"/"+lcSta+"/"+lcStruct+"/"+lcUnit, chercheur);
   }
   // findAllUnites(){
   //   return this.http.get(this.host+"/ms-struct/findAllUnites")

@@ -34,7 +34,12 @@ import {AppeloffreComponent} from './appeloffre/appeloffre.component';
 import {ErrorInterceptor} from './login/ErrorInterceptor';
 import {MaterialFileInputModule} from 'ngx-material-file-input';
 import { FormUsersComponent } from './users/form-users/form-users.component';
-// import { MenuComponent } from './layout/menu/menu.component';
+import { UpdateUserComponent } from './users/update/update-user.component';
+import { FormChercheurComponent } from './chercheurs/form-chercheur/form-chercheur.component';
+import { UpdateChercheurComponent } from './chercheurs/update-chercheur/update-chercheur.component';
+import { DatePipe } from '@angular/common';
+import { FormGestionproductionComponent } from './gestion-production/form-gestionproduction/form-gestionproduction.component';
+import { UpdateGestionproductionComponent } from './gestion-production/update-gestionproduction/update-gestionproduction.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +57,11 @@ import { FormUsersComponent } from './users/form-users/form-users.component';
     FormStructComponent,
     AppeloffreComponent,
     FormUsersComponent,
+    UpdateUserComponent,
+    FormChercheurComponent,
+    UpdateChercheurComponent,
+    FormGestionproductionComponent,
+    UpdateGestionproductionComponent,
     // MenuComponent,
   ],
   imports: [
@@ -62,7 +72,7 @@ import { FormUsersComponent } from './users/form-users/form-users.component';
     NgbModule.forRoot(), MatMenuModule, MatStepperModule, MatGridListModule, MatDialogModule,MatSnackBarModule,
     MaterialFileInputModule, NgxMatSelectSearchModule,
   ],
-  providers: [HttpClient,ConfirmationDialogService, AppeldoffresService, AuthenticationService,
+  providers: [HttpClient,ConfirmationDialogService, AppeldoffresService, AuthenticationService,DatePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
@@ -72,7 +82,10 @@ import { FormUsersComponent } from './users/form-users/form-users.component';
   entryComponents: [
     ConfirmationDialogComponent, FormComponent,
     DetailsProductionComponent, FormStructComponent,
-    FormUsersComponent ],
+    FormUsersComponent, UpdateUserComponent,
+    FormChercheurComponent, UpdateChercheurComponent,
+    FormGestionproductionComponent, UpdateGestionproductionComponent,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

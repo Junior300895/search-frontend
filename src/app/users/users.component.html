@@ -1,6 +1,6 @@
 <div class="container mat-elevation-z8">
     <div class="example-button-row">
-      <button mat-raised-button color="primary" (click)="onFormUser()">Créer un utilisateur</button>
+      <button mat-raised-button color="primary" (click)="onAddUser()">Créer un utilisateur</button>
     </div>
 
     <mat-form-field>
@@ -42,8 +42,12 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef class="text-center"> Action </th>
         <td mat-cell *matCellDef="let element" class="text-center">
-          <button mat-raised-button color="primary" (click)="onModifyUser(element.mail)">Modifier</button>
-          <button mat-raised-button color="warn" (click)="onDeleteUser(element.mail)">Supprimer</button>
+          <button mat-button (click)="onModifyUser(element)" style="color: blue;">
+            <mat-icon inline=true>create</mat-icon>
+          </button>
+          <button mat-button (click)="onDeleteUser(element.mail)" style="color: red;">
+            <mat-icon inline=true>delete_outline</mat-icon>
+          </button>
         </td>
       </ng-container>
 

@@ -1,0 +1,102 @@
+<!--  Formulaire d'ajout de production-->
+<mat-toolbar>
+  <span>Formulaire création production</span>
+</mat-toolbar>
+
+  <mat-card class="my-card full-width">
+    <mat-card-content>
+      <section class="example-section">
+        <label class="text-info">Cochez le type de production à publier :</label>
+        <mat-radio-group>
+          <mat-radio-button class="example-margin" #big value="after" (change)="0" checked>Publication</mat-radio-button>
+          <mat-radio-button class="example-margin" #small value="before" (change)="0">Communication</mat-radio-button>
+        </mat-radio-group>
+      </section>
+
+      <div mat-dialog-content [formGroup]="form" >
+
+      <div class="row" formGroupName="infos">
+        <mat-form-field *ngIf="big.checked" class="col-6">
+          <mat-error  *ngIf="form.get('infos').get('typepub').hasError('required')">Type publication is required</mat-error>
+          <mat-select placeholder="Type de publication :" formControlName="typepub">
+            <mat-option *ngFor="let typepub of typeproductionsbypub" [value]="typepub.libelecourt">
+              {{ typepub.libelecourt }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="small.checked" class="col-6">
+          <mat-error  *ngIf="form.get('infos').get('typepub').hasError('required')">Type communication is required</mat-error>
+          <mat-select placeholder="Type de communication :" formControlName="typepub">
+            <mat-option *ngFor="let typepub of typeproductionsbycom" [value]="typepub.libelecourt">
+              {{ typepub.libelecourt }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width col-6">
+          <mat-error  *ngIf="form.get('infos').get('nomthematique').hasError('required')">Thematique is required</mat-error>
+          <mat-select placeholder="Renseigner Thematique:" formControlName="nomthematique">
+            <mat-option *ngFor="let th of thematiques" [value]="th.libeleCourt">
+              {{ th.libeleCourt }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div formGroupName="production">
+        <mat-form-field class="full-width">
+          <mat-label>Libele</mat-label>
+          <textarea  matInput formControlName="libelelong" placeholder="Libele"  name="libele" required></textarea>
+          <mat-error  *ngIf="form.get('production').get('libelelong').hasError('required')">Libele long is required</mat-error>
+        </mat-form-field>
+
+        <div class="row">
+          <mat-form-field class="full-width">
+            <mat-label>Revue lieu</mat-label>
+            <input  matInput formControlName="revuelieu" placeholder="Revue lieu" name="revuelieu" required>
+            <mat-error  *ngIf="form.get('production').get('revuelieu').hasError('required')">Revue lieu is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-6">
+            <mat-label>Adresse</mat-label>
+            <input  matInput formControlName="adresse" placeholder="Address" name="adresse" required>
+            <mat-error  *ngIf="form.get('production').get('adresse').hasError('required')">Address is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-6">
+            <mat-label>Directeur publication</mat-label>
+            <input  matInput formControlName="directeurpub" placeholder="Directeur publication" name="directeurpub">
+            <mat-error  *ngIf="form.get('production').get('directeurpub').hasError('required')">Directeur pub is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="col-6">
+            <mat-label>Num volume</mat-label>
+            <input  matInput formControlName="numvol" placeholder="Password"  name="numvolume">
+            <mat-error  *ngIf="form.get('production').get('numvol').hasError('required')">Numero volume is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-6">
+            <mat-label>Pages</mat-label>
+            <input  matInput formControlName="pages" placeholder="Password" name="pages">
+            <mat-error  *ngIf="form.get('production').get('pages').hasError('required')">Pages is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="full-width col-6">
+            <ngx-mat-file-input placeholder="Télécharger fichier" name="file" (change)="fileChange($event)"></ngx-mat-file-input>
+            <mat-icon matSuffix>folder</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <!--REGISTER BUTTON HERE-->
+      <button mat-raised-button (click)="onSubmit()" style="color: blue;" [disabled]="!form.valid">Valider</button>
+      <button mat-raised-button (click)="onCancel()" style="color: red;">Annuler</button>
+    </mat-card-actions>
+  </mat-card>

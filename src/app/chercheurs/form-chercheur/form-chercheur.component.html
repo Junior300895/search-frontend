@@ -1,0 +1,140 @@
+  <!--  Formulaire d'ajout de production-->
+  <mat-toolbar>
+    <span>Formulaire d'ajout d'un chercheur</span>
+  </mat-toolbar>
+  <mat-card class="my-card full-width">
+    <mat-card-content>
+      <mat-horizontal-stepper linear #stepper>
+<!--         1-->
+        <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
+          <form [formGroup]="firstFormGroup" (ngSubmit)="form1()" #formone="ngForm">
+            <ng-template matStepLabel>Détails chercheurs</ng-template>
+      <div class="row">
+        <mat-form-field class="col-6">
+          <mat-label>Prenom</mat-label>
+          <input  matInput  formControlName="prenom" placeholder="Prenom"  name="prenom">
+        </mat-form-field>
+
+        <mat-form-field class="col-6">
+          <mat-label>Nom</mat-label>
+          <input  matInput formControlName="nom" placeholder="Nom" name="nom">
+        </mat-form-field>
+      </div>
+
+      <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
+        <input  matInput  placeholder="Email" name="mail" formControlName="email">
+      </mat-form-field>
+
+      <div class="row">
+        <mat-form-field color="accent" class="col-6">
+          <input matInput [matDatepicker]="picker1" placeholder="Date de naissance" formControlName="ne_le">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" class="col-6">
+          <mat-label>Lieu de naissance</mat-label>
+          <input  matInput  placeholder="Lieu de naissance" name="lieunaiss" formControlName="lieu_de_naissance">
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="col-6">
+          <mat-label>Nationalite</mat-label>
+          <input  matInput  placeholder="Lieu de naissance" name="nationalite" formControlName="nationalite">
+        </mat-form-field>
+
+        <mat-form-field class="col-6">
+          <mat-label>Adresse</mat-label>
+          <input  matInput  placeholder="Lieu de naissance" name="adresse" formControlName="adresse_perso" required>
+        </mat-form-field>
+      </div>
+
+            <div>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+<!--          2-->
+        <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+                    <form [formGroup]="secondFormGroup" (ngSubmit)="form2()" #formtwo="ngForm">
+                      <ng-template matStepLabel>Informations chercheurs</ng-template>
+                <div class="row">
+        <mat-form-field class="col-6">
+          <mat-select multiple placeholder="Renseigner thematique:" formControlName="lcThematique" required>
+            <mat-option *ngFor="let th of thematiques" [value]="th.libeleCourt">
+              {{ th.libeleCourt }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-6">
+          <mat-select placeholder="Renseigner fonction:" formControlName="lcFonction" required>
+            <mat-option *ngFor="let fct of fonctions" [value]="fct.libeleCourt">
+              {{ fct.libeleCourt }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="col-6">
+          <mat-select placeholder="Renseigner grade:" formControlName="lcGrade" required>
+            <mat-option *ngFor="let grade of grades" [value]="grade.libeleCourt">
+              {{ grade.libeleCourt }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-6">
+          <mat-select placeholder="Renseigner statut:" formControlName="lcStatut" required>
+            <mat-option *ngFor="let st of statuts" [value]="st.libeleCourt">
+              {{ st.libeleCourt }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="col-6">
+          <mat-select placeholder="Renseigner structure:" formControlName="lcStructure" required>
+            <mat-option *ngFor="let str of structures" [value]="str.libeleCourt">
+              {{ str.libeleCourt }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="col-6">
+          <mat-select placeholder="Renseigner unite:" formControlName="lcUniteRecherche" required>
+            <mat-option *ngFor="let uni of unites" [value]="uni.libeleCourt">
+              {{ uni.libeleCourt }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+<!--          3-->
+        <mat-step>
+          <ng-template matStepLabel>Fait</ng-template>
+          <p>You are now done.</p>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+            <button mat-raised-button style="background-color: green; color: white;" (click)="onSubmit()">
+              Valider
+            </button>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+
+    </mat-card-content>
+  </mat-card>
