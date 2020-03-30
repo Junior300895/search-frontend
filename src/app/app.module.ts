@@ -69,7 +69,7 @@ import { UpdateGestionproductionComponent } from './gestion-production/update-ge
     MatToolbarModule, MatIconModule, MatCardModule, MatButtonModule, MatProgressSpinnerModule,
     MatSidenavModule, MatListModule, MatFormFieldModule, MatTableModule, MatPaginatorModule,
     MatNativeDateModule, MatDatepickerModule, MatCheckboxModule, MatInputModule, MatRadioModule, MatSelectModule,
-    NgbModule.forRoot(), MatMenuModule, MatStepperModule, MatGridListModule, MatDialogModule,MatSnackBarModule,
+    MatMenuModule, MatStepperModule, MatGridListModule, MatDialogModule,MatSnackBarModule,
     MaterialFileInputModule, NgxMatSelectSearchModule,
   ],
   providers: [HttpClient,ConfirmationDialogService, AppeldoffresService, AuthenticationService,DatePipe,

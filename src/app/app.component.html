@@ -29,9 +29,15 @@
 
       <a mat-button [matMenuTriggerFor]="menuAdmin" style="margin-right: 50px">Paramétrage</a>
       <mat-menu #menuAdmin="matMenu">
-        <button mat-menu-item routerLink="/users">Gestion des utlisateurs</button>
-        <button mat-menu-item routerLink="/chercheurs">Gestion des chercheurs</button>
-        <button mat-menu-item routerLink="/infos-chercheurs">Gestion des infos chercheurs</button>
+        <button mat-menu-item routerLink="/users">
+          Utlisateurs <mat-icon>supervisor_account</mat-icon>
+        </button>
+        <button mat-menu-item routerLink="/chercheurs">
+          Chercheurs <mat-icon>supervisor_account</mat-icon>
+        </button>
+        <button mat-menu-item routerLink="/infos-chercheurs">
+          Infos chercheurs <mat-icon>supervisor_account</mat-icon>
+        </button>
       </mat-menu>
 
       <a mat-button routerLink="/login">

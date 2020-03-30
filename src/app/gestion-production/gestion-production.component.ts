@@ -131,7 +131,7 @@ export class GestionProductionComponent implements OnInit {
   addProduction() {
     const dialogRef = this.dialog.open(FormGestionproductionComponent, {
       width: '700px',
-      height: '550px',
+      height: '580px',
       data: {}
     });
 

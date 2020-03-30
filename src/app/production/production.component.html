@@ -1,4 +1,4 @@
-<div class="container" style="margin-top: 20px">
+<div class="container-fluid" style="margin-top: 20px">
   <div  *ngIf="show=='pub'">
     <mat-form-field>
       <mat-label>Recherche</mat-label>
@@ -6,7 +6,7 @@
     </mat-form-field>
 
     <div class="row">
-      <div class="col-4" *ngFor="let pub of obs | async">
+      <div class="col-md-4" *ngFor="let pub of obs | async">
           <mat-card class="example-card" style="margin: 10px">
             <!--  <img mat-card-image src="../../assets/logo.jpg" alt="Photo of a Shiba Inu">-->
             <mat-card-header>
